@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM GO NOW Tours - Sistema de Gestão de Leads</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-helicopter"></i>
+                    <h1>GO NOW Tours</h1>
+                </div>
+                <p class="subtitle">Sistema de Gestão de Leads</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="password">Senha de Acesso</label>
+                    <div class="password-input">
+                        <input type="password" id="password" placeholder="Digite sua senha" required>
+                        <button type="button" id="togglePassword" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Entrar no Sistema
+                </button>
+                
+                <div id="loginError" class="error-message" style="display: none;">
+                    Senha incorreta. Tente novamente.
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Turismo receptivo no Rio de Janeiro</p>
+                <div class="features">
+                    <span><i class="fas fa-shield-alt"></i> Seguro</span>
+                    <span><i class="fas fa-chart-line"></i> Eficiente</span>
+                    <span><i class="fas fa-mobile-alt"></i> Responsivo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sistema CRM Principal -->
+    <div id="crmSystem" class="crm-system" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-helicopter"></i>
+                        <h1>GO NOW Tours</h1>
+                    </div>
+                    <span class="subtitle">CRM - Gestão de Leads</span>
+                </div>
+                
+                <div class="header-right">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalLeads">0</span>
+                            <span class="stat-label">Total de Leads</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="urgentLeads">0</span>
+                            <span class="stat-label">Urgentes</span>
+                        </div>
+                    </div>
+                    
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button id="addLeadBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Novo Lead
+                </button>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar leads...">
+                </div>
+            </div>
+            
+            <div class="toolbar-right">
+                <div class="filter-group">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">Todos os Status</option>
+                        <option value="Novo">Novo</option>
+                        <option value="Conversando">Conversando</option>
+                        <option value="Confirmado">Confirmado</option>
+                        <option value="Perdido">Perdido</option>
+                    </select>
+                    
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">Todas as Categorias</option>
+                        <option value="Urgente">Urgente</option>
+                        <option value="Próximo">Próximo</option>
+                        <option value="Planejando">Planejando</option>
+                        <option value="Futuro">Futuro</option>
+                        <option value="Sem data">Sem data</option>
+                    </select>
+                </div>
+                
+                <button id="exportBtn" class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabela de Leads -->
+        <div class="table-container">
+            <table id="leadsTable" class="leads-table">
+                <thead>
+                    <tr>
+                        <th>Nome do Cliente</th>
+                        <th>WhatsApp</th>
+                        <th>Origem</th>
+                        <th>Tour</th>
+                        <th>Data Chegada</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Idioma</th>
+                        <th>Última Interação</th>
+                        <th>Próxima Interação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                    <!-- Dados serão inseridos dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar/Editar Lead -->
+    <div id="leadModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Lead</h2>
+                <button id="closeModal" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="leadForm" class="lead-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientName">Nome do Cliente *</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp *</label>
+                        <input type="text" id="whatsapp" placeholder="+55 21 99999-9999" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contactOrigin">Origem do Contato *</label>
+                        <select id="contactOrigin" required>
+                            <option value="">Selecione...</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Site">Site</option>
+                            <option value="Indicação">Indicação</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Google">Google</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tourInterest">Tour de Interesse *</label>
+                        <select id="tourInterest" required>
+                            <option value="">Selecione...</option>
+                            <option value="Helicóptero">Helicóptero</option>
+                            <option value="Asa Delta">Asa Delta</option>
+                            <option value="Maracanã">Maracanã</option>
+                            <option value="Cristo Redentor">Cristo Redentor</option>
+                            <option value="Pão de Açúcar">Pão de Açúcar</option>
+                            <option value="City Tour">City Tour</option>
+                            <option value="Trilhas">Trilhas</option>
+                            <option value="Favela Tour">Favela Tour</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="arrivalDate">Data de Chegada ao Rio</label>
+                        <input type="date" id="arrivalDate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="leadStatus">Status do Lead *</label>
+                        <select id="leadStatus" required>
+                            <option value="Novo">Novo</option>
+                            <option value="Conversando">Conversando</option>
+                            <option value="Confirmado">Confirmado</option>
+                            <option value="Perdido">Perdido</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="language">Idioma *</label>
+                        <select id="language" required>
+                            <option value="Português">Português</option>
+                            <option value="Inglês">Inglês</option>
+                            <option value="Espanhol">Espanhol</option>
+                            <option value="Francês">Francês</option>
+                            <option value="Italiano">Italiano</option>
+                            <option value="Alemão">Alemão</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nextInteraction">Próxima Interação</label>
+                        <input type="date" id="nextInteraction">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="observations">Observações</label>
+                    <textarea id="observations" rows="3" placeholder="Notas sobre o cliente..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Lead</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
