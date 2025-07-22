@@ -3,10 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM GO NOW Tours - Sistema de Gestão de Leads</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>CRM GO NOW Tours</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007A87;
+            --secondary-color: #FF5A5F;
+            --dark-color: #2C3E50;
+            --light-color: #F5F7FA;
+            --success-color: #27AE60;
+            --warning-color: #F39C12;
+            --danger-color: #E74C3C;
+            --gray-color: #95A5A6;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--gray-color);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .login-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-input input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 122, 135, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .login-btn i {
+            margin-right: 8px;
+        }
+
+        .login-btn:hover {
+            background-color: #006570;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .login-footer {
+            margin-top: 30px;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 15px;
+        }
+
+        .features span {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .features i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        /* CRM System */
+        .crm-system {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left .logo {
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .stats {
+            display: flex;
+            margin-right: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            margin-left: 20px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray-color);
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid var(--gray-color);
+            color: var(--dark-color);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .success-text {
+            font-size: 1.2rem;
+            color: var(--gray-color);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: #006570;
+        }
+    </style>
 </head>
 <body>
     <!-- Tela de Login -->
@@ -52,9 +360,8 @@
         </div>
     </div>
 
-    <!-- Sistema CRM Principal -->
-    <div id="crmSystem" class="crm-system" style="display: none;">
-        <!-- Header -->
+    <!-- Sistema CRM Principal (Simplificado para teste) -->
+    <div id="crmSystem" class="crm-system">
         <header class="header">
             <div class="header-content">
                 <div class="header-left">
@@ -68,11 +375,11 @@
                 <div class="header-right">
                     <div class="stats">
                         <div class="stat-item">
-                            <span class="stat-number" id="totalLeads">0</span>
+                            <span class="stat-number" id="totalLeads">5</span>
                             <span class="stat-label">Total de Leads</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number" id="urgentLeads">0</span>
+                            <span class="stat-number" id="urgentLeads">3</span>
                             <span class="stat-label">Urgentes</span>
                         </div>
                     </div>
@@ -85,179 +392,78 @@
             </div>
         </header>
 
-        <!-- Toolbar -->
-        <div class="toolbar">
-            <div class="toolbar-left">
-                <button id="addLeadBtn" class="btn btn-primary">
-                    <i class="fas fa-plus"></i>
-                    Novo Lead
-                </button>
-                
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar leads...">
-                </div>
-            </div>
-            
-            <div class="toolbar-right">
-                <div class="filter-group">
-                    <select id="statusFilter" class="filter-select">
-                        <option value="">Todos os Status</option>
-                        <option value="Novo">Novo</option>
-                        <option value="Conversando">Conversando</option>
-                        <option value="Confirmado">Confirmado</option>
-                        <option value="Perdido">Perdido</option>
-                    </select>
-                    
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="">Todas as Categorias</option>
-                        <option value="Urgente">Urgente</option>
-                        <option value="Próximo">Próximo</option>
-                        <option value="Planejando">Planejando</option>
-                        <option value="Futuro">Futuro</option>
-                        <option value="Sem data">Sem data</option>
-                    </select>
-                </div>
-                
-                <button id="exportBtn" class="btn btn-secondary">
-                    <i class="fas fa-download"></i>
-                    Exportar
-                </button>
-            </div>
-        </div>
-
-        <!-- Tabela de Leads -->
-        <div class="table-container">
-            <table id="leadsTable" class="leads-table">
-                <thead>
-                    <tr>
-                        <th>Nome do Cliente</th>
-                        <th>WhatsApp</th>
-                        <th>Origem</th>
-                        <th>Tour</th>
-                        <th>Data Chegada</th>
-                        <th>Categoria</th>
-                        <th>Status</th>
-                        <th>Idioma</th>
-                        <th>Última Interação</th>
-                        <th>Próxima Interação</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="leadsTableBody">
-                    <!-- Dados serão inseridos dinamicamente -->
-                </tbody>
-            </table>
+        <div class="success-message">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2 class="success-title">Login realizado com sucesso!</h2>
+            <p class="success-text">
+                O sistema de login está funcionando corretamente. 
+                Esta é uma versão simplificada para teste do login no GitHub Pages.
+            </p>
+            <button id="backToLoginBtn" class="btn-primary">Voltar para Login</button>
         </div>
     </div>
 
-    <!-- Modal para Adicionar/Editar Lead -->
-    <div id="leadModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Novo Lead</h2>
-                <button id="closeModal" class="close-btn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+    <script>
+        // Configurações
+        const CORRECT_PASSWORD = 'Mxcf1545*';
+        
+        // Elementos DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se já está logado
+            if (localStorage.getItem('loggedIn') === 'true') {
+                showCRMSystem();
+            }
             
-            <form id="leadForm" class="lead-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="clientName">Nome do Cliente *</label>
-                        <input type="text" id="clientName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="whatsapp">WhatsApp *</label>
-                        <input type="text" id="whatsapp" placeholder="+55 21 99999-9999" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contactOrigin">Origem do Contato *</label>
-                        <select id="contactOrigin" required>
-                            <option value="">Selecione...</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="Site">Site</option>
-                            <option value="Indicação">Indicação</option>
-                            <option value="WhatsApp">WhatsApp</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Google">Google</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="tourInterest">Tour de Interesse *</label>
-                        <select id="tourInterest" required>
-                            <option value="">Selecione...</option>
-                            <option value="Helicóptero">Helicóptero</option>
-                            <option value="Asa Delta">Asa Delta</option>
-                            <option value="Maracanã">Maracanã</option>
-                            <option value="Cristo Redentor">Cristo Redentor</option>
-                            <option value="Pão de Açúcar">Pão de Açúcar</option>
-                            <option value="City Tour">City Tour</option>
-                            <option value="Trilhas">Trilhas</option>
-                            <option value="Favela Tour">Favela Tour</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="arrivalDate">Data de Chegada ao Rio</label>
-                        <input type="date" id="arrivalDate">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="leadStatus">Status do Lead *</label>
-                        <select id="leadStatus" required>
-                            <option value="Novo">Novo</option>
-                            <option value="Conversando">Conversando</option>
-                            <option value="Confirmado">Confirmado</option>
-                            <option value="Perdido">Perdido</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="language">Idioma *</label>
-                        <select id="language" required>
-                            <option value="Português">Português</option>
-                            <option value="Inglês">Inglês</option>
-                            <option value="Espanhol">Espanhol</option>
-                            <option value="Francês">Francês</option>
-                            <option value="Italiano">Italiano</option>
-                            <option value="Alemão">Alemão</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nextInteraction">Próxima Interação</label>
-                        <input type="date" id="nextInteraction">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="observations">Observações</label>
-                    <textarea id="observations" rows="3" placeholder="Notas sobre o cliente..."></textarea>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Lead</button>
-                </div>
-            </form>
-        </div>
-    </div>
+            // Event Listeners
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('togglePassword').addEventListener('click', togglePasswordVisibility);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('backToLoginBtn').addEventListener('click', handleLogout);
+        });
 
-    <script src="script.js"></script>
+        // Sistema de Login
+        function handleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === CORRECT_PASSWORD) {
+                localStorage.setItem('loggedIn', 'true');
+                showCRMSystem();
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            
+            const icon = document.getElementById('togglePassword').querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('loggedIn');
+            showLoginScreen();
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('crmSystem').style.display = 'none';
+            document.getElementById('password').value = '';
+        }
+
+        function showCRMSystem() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('crmSystem').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
+
 
 
